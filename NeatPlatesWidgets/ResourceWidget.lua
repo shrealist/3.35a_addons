@@ -396,7 +396,7 @@ local function CreateResourceIcon(parent, pointData)
 
     frame.Cooldown:SetAllPoints(frame)
     frame.Cooldown:SetReverse(true)
-    frame.Cooldown:SetHideCountdownNumbers(true)
+    --frame.Cooldown:SetHideCountdownNumbers(true)
     frame.Cooldown:SetDrawEdge(false)
     frame.Cooldown.noCooldownCount = true -- Disable OmniCC interaction
 

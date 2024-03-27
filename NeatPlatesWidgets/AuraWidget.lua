@@ -649,7 +649,7 @@ local function CreateAuraIcon(parent)
 
 	frame.Cooldown:SetAllPoints(frame)
 	frame.Cooldown:SetReverse(true)
-	frame.Cooldown:SetHideCountdownNumbers(true)
+	--frame.Cooldown:SetHideCountdownNumbers(true)
 	frame.Cooldown:SetDrawEdge(true)
 
 	frame.Info:SetAllPoints(frame)

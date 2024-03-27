@@ -27,9 +27,11 @@ local WorldFrame, UIParent = WorldFrame, UIParent
 local GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit
 local SetNamePlateFriendlySize = function(x,y)
 	if NameplateNoStackingFriendly then x, y = 1, 1 end
-	C_NamePlate.SetNamePlateFriendlySize(x,y)
+	--C_NamePlate.SetNamePlateFriendlySize(x,y)
 end
-local SetNamePlateEnemySize = C_NamePlate.SetNamePlateEnemySize
+local SetNamePlateEnemySize = function(x,y)
+	--C_NamePlate.SetNamePlateEnemySize
+end
 
 -- Internal Data
 local Plates, PlatesVisible, PlatesFading, GUID = {}, {}, {}, {}	         	-- Plate Lists
@@ -614,7 +616,7 @@ end
 -- Register events to be handled on the nameplate
 local function RegisterNameplateEvents(plate, unitid)
 	plate:SetScript("OnEvent", NameplateEventHandler);
-
+	plate.RegisterUnitEvent = plate.RegisterEvent
 	-- Register Events
 	plate:RegisterUnitEvent("UNIT_MAXHEALTH", unitid)
 	plate:RegisterUnitEvent("UNIT_POWER_UPDATE", unitid)

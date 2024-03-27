@@ -25,29 +25,6 @@ local function DebugGetUnitChargedPowerPoints(currentPoints)
 	return points
 end
 
-Enum = {}
-Enum.PowerType = {}
-Enum.PowerType.Mana = 0
-Enum.PowerType.Rage = 1
-Enum.PowerType.Focus = 2
-Enum.PowerType.Energy = 3
-Enum.PowerType.ComboPoints = 4
-Enum.PowerType.Runes = 5
-Enum.PowerType.RunicPower = 6
-Enum.PowerType.SoulShards = 7
-Enum.PowerType.LunarPower = 8
-Enum.PowerType.HolyPower = 9
-Enum.PowerType.Alternate = 10
-Enum.PowerType.Maelstrom = 11
-Enum.PowerType.Chi = 12
-Enum.PowerType.Insanity = 13
-Enum.PowerType.Obsolete = 14
-Enum.PowerType.Obsolete2 = 15
-Enum.PowerType.ArcaneCharges = 16
-Enum.PowerType.Fury = 17
-Enum.PowerType.Pain = 18
-
-
 ------------------------------
 -- Combo Point Widget
 ------------------------------
