@@ -262,12 +262,23 @@ function NP:UnitClass(frame, unitType)
 end
 
 function NP:UnitDetailedThreatSituation(frame)
+	if frame.UnitType == "ENEMY_NPC" then
+		local unit = frame.frame.np_unit
+		local isTanking, status, threatpct, rawthreatpct, threatvalue = UnitDetailedThreatSituation("player", unit)
+		return status
+	end
+
 	if not frame.Threat:IsShown() then
 		if frame.UnitType == "ENEMY_NPC" then
 			local r, g = frame.oldName:GetTextColor()
 			return (r > 0.5 and g < 0.5) and 0 or nil
 		end
 	else
+		-- local istarget_player = UnitIsUnit(unit.."-target", "player")
+		-- if istarget_player then
+		-- 	return 3
+		-- end
+
 		local r, g, b = frame.Threat:GetVertexColor()
 		if r > 0 then
 			if g > 0 then
@@ -573,12 +584,23 @@ function NP:OnCreated(frame)
 	local Health, CastBar = frame:GetChildren()
 	local Threat, Border, CastBarBorder, CastBarShield, CastBarIcon, Highlight, Name, Level, BossIcon, RaidIcon, EliteIcon = frame:GetRegions()
 
+	-- for k, v in ipairs(C_NamePlate.GetNamePlates()) do
+	-- 	local unit = 'nameplate'..k
+	-- 	if v == frame do
+	-- 		frame.unit = unit
+	-- 	end
+	--  end
+	--print("OnCreated", frame.np_unit)
+	frame.unit = frame.np_unit
+
 	local unitFrame = CreateFrame("Frame", format("ElvUI_NamePlate%d", plateID), frame)
 	frame.UnitFrame = unitFrame
 	unitFrame:Hide()
 	unitFrame:SetAllPoints()
 	unitFrame:SetScript("OnEvent", self.OnEvent)
 	unitFrame.plateID = plateID
+
+	unitFrame.frame = frame
 
 	unitFrame.Health = self:Construct_HealthBar(unitFrame)
 	unitFrame.Health.Highlight = self:Construct_Highlight(unitFrame)
@@ -870,6 +892,7 @@ function NP:OnUpdate()
 		local status = NP:UnitDetailedThreatSituation(frame)
 		if frame.ThreatStatus ~= status then
 			frame.ThreatStatus = status
+			print(status)
 
 			NP:Update_HealthColor(frame)
 		end
@@ -1200,6 +1223,16 @@ function NP:TogleTestFrame(unitType)
 	end
 end
 
+function NP:NAME_PLATE_UNIT_ADDED(_, unit)
+	--print("NAME_PLATE_UNIT_ADDED", unit)
+	local frame = C_NamePlate.GetNamePlateForUnit(unit)
+	frame.np_unit = unit
+end
+
+function NP:NAME_PLATE_UNIT_REMOVED(_, unit)
+	--print("NAME_PLATE_UNIT_REMOVED", unit)
+end
+
 function NP:Initialize()
 	self.db = E.db.nameplates
 
@@ -1264,6 +1297,9 @@ function NP:Initialize()
 	self:RegisterEvent("UNIT_ENERGY")
 	self:RegisterEvent("UNIT_FOCUS")
 	self:RegisterEvent("UNIT_RAGE")
+
+	self:RegisterEvent("NAME_PLATE_UNIT_ADDED")
+	self:RegisterEvent("NAME_PLATE_UNIT_REMOVED")
 
 	-- Arena & Arena Pets
 	self:CacheArenaUnits()
