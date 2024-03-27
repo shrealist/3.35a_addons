@@ -268,7 +268,7 @@ function NP:UnitDetailedThreatSituation(frame)
 		if status == nil and UnitAffectingCombat("player") and UnitAffectingCombat(unit) then
 			status = 0
 		end
-		return status, threatpct
+		return status, threatpct and math.floor(threatpct) or nil
 	end
 
 	if not frame.Threat:IsShown() then
@@ -893,10 +893,10 @@ function NP:OnUpdate()
 		end
 
 		local status, threatpct = NP:UnitDetailedThreatSituation(frame)
-		if frame.ThreatStatus ~= status then
+		
+		if frame.ThreatStatus ~= status or frame.ThreatPct ~= threatpct then
 			frame.ThreatStatus = status
 			frame.ThreatPct = threatpct
-
 			NP:Update_HealthColor(frame)
 		end
 	end
