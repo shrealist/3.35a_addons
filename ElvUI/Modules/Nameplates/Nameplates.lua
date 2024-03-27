@@ -483,6 +483,8 @@ function NP:OnHide(isConfig, dontHideHighlight)
 	frame.RaidIconType = nil
 	frame.ThreatScale = nil
 	frame.ThreatStatus = nil
+	frame.ThreatPct = nil
+	frame.np_unit = nil
 
 	if not dontHideHighlight then
 		frame.oldHighlight:Hide()
