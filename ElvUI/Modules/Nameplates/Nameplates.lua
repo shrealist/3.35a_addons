@@ -265,7 +265,10 @@ function NP:UnitDetailedThreatSituation(frame)
 	if frame.UnitType == "ENEMY_NPC" then
 		local unit = frame.frame.np_unit
 		local isTanking, status, threatpct, rawthreatpct, threatvalue = UnitDetailedThreatSituation("player", unit)
-		return status
+		if status == nil and UnitAffectingCombat("player") and UnitAffectingCombat(unit) then
+			status = 0
+		end
+		return status, threatpct
 	end
 
 	if not frame.Threat:IsShown() then
@@ -889,10 +892,10 @@ function NP:OnUpdate()
 			NP:UpdateAllFrame(frame, nil, true)
 		end
 
-		local status = NP:UnitDetailedThreatSituation(frame)
+		local status, threatpct = NP:UnitDetailedThreatSituation(frame)
 		if frame.ThreatStatus ~= status then
 			frame.ThreatStatus = status
-			print(status)
+			frame.ThreatPct = threatpct
 
 			NP:Update_HealthColor(frame)
 		end
