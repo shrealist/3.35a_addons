@@ -25171,8 +25171,8 @@ function Nx.Map:InT1()
   Nx.NTMI = self.NTMI
   Nx.MOTMI = {}
   self.MaN = {{GetMapZones(1)}, {GetMapZones(2)}, {GetMapZones(3)}, {}, {}}
-  -elf.MaN[4] = {GetMapZones(4)}
-  self.MaN = {{}, {}, {}, {}, {}}
+  self.MaN[4] = {GetMapZones(4)}
+  --self.MaN = {{}, {}, {}, {}, {}}
   tinsert(self.MaN[2], NXlMapNames["Plaguelands: The Scarlet Enclave"] or "Plaguelands: The Scarlet Enclave")
   local BGN = {}
   self.MaN[9] = BGN
@@ -25352,6 +25352,7 @@ function Nx.Map:InT1()
           end
       end
   end
+
   Nx.ZoC = Nx["ZoneConnections"] or Nx.ZoC
   for ci = 1, self.CoC do
       for n = 0, 999 do
