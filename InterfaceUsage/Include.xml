@@ -1,0 +1,15 @@
+<Ui>
+
+	<!--  Libs -->
+	<Script file="Libs\AzDropDown.lua"/>
+
+	<!--  Core -->
+	<Script file="core.lua"/>
+
+	<!--  Poll Modules -->
+	<Script file="Polls\addons.lua"/>
+	<Script file="Polls\addonspam.lua"/>
+	<Script file="Polls\eventcalls.lua"/>
+	<Script file="Polls\framescripts.lua"/>
+
+</Ui>
