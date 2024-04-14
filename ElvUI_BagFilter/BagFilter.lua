@@ -22,6 +22,9 @@ local function SetSlotFilter(self, bagID, slotID)
 end
 
 local function SetFilter(self)
+    -- B.BagFrame.editBox:SetText("武器 !史诗 | 护甲 !史诗")
+    -- B:UpdateSearch()
+    
     local f = B:GetContainerFrame(self.isBank);
     if not (f and f.FilterHolder) then return; end
 
@@ -31,14 +34,23 @@ local function SetFilter(self)
         end
     end
     f.FilterHolder.active = self:GetID();
-
-    for i, bagID in ipairs(f.BagIDs) do
-        if f.Bags[bagID] then
-            for slotID = 1, f.Bags[bagID].numSlots do
-                SetSlotFilter(f, bagID, slotID);
+    local s = f.FilterHolder[f.FilterHolder.active].filter_string;
+    if s == ALL then
+        B.BagFrame.editBox:SetText('')
+    elseif s ~= '' then
+        B.BagFrame.editBox:SetText(s)
+    else
+        B.BagFrame.editBox:SetText('')
+        for i, bagID in ipairs(f.BagIDs) do
+            if f.Bags[bagID] then
+                for slotID = 1, f.Bags[bagID].numSlots do
+                    SetSlotFilter(f, bagID, slotID);
+                end
             end
         end
     end
+
+
 end
 
 local function ResetFilter(self)
@@ -68,7 +80,7 @@ local function AddFilterButtons(f, isBank)
 
     for i, filter in ipairs(U.Filters) do
         if not f.FilterHolder[i] then
-            local name, icon, func = unpack(filter);
+            local name, icon, func, filter_string = unpack(filter);
 
             if WOW_PROJECT_ID == WOW_PROJECT_CLASSIC then
                 f.FilterHolder[i] = CreateFrame('CheckButton', nil, f.FilterHolder);
@@ -81,6 +93,7 @@ local function AddFilterButtons(f, isBank)
             f.FilterHolder[i]:SetPushedTexture('');
             f.FilterHolder[i].ttText = name;
             f.FilterHolder[i].filter = func;
+            f.FilterHolder[i].filter_string = filter_string;
             f.FilterHolder[i].isBank = isBank;
             f.FilterHolder[i]:SetScript('OnEnter', B.Tooltip_Show);
             f.FilterHolder[i]:SetScript('OnLeave', B.Tooltip_Hide);
@@ -214,23 +227,27 @@ do
         { L.All, 'Interface/Icons/INV_Misc_EngGizmos_17',
           function(location, link, type, subType)
               return true;
-          end
+          end,
+          ALL
         },
         { L.Equipment, 'Interface/Icons/INV_Chest_Chain_04',
           function(location, link, type, subType)
               return type == AUCTION_CATEGORY_ARMOR or
                      type == AUCTION_CATEGORY_WEAPONS;
-          end
+          end,
+          AUCTION_CATEGORY_WEAPONS..' !史诗'..' | '..AUCTION_CATEGORY_ARMOR..' !史诗'
         },
         { L.Consumable, 'Interface/Icons/INV_Potion_93',
           function(location, link, type, subType)
               return type == AUCTION_CATEGORY_CONSUMABLES;
-          end
+          end,
+          AUCTION_CATEGORY_CONSUMABLES
         },
         { L.Quest, 'Interface/QuestFrame/UI-QuestLog-BookIcon',
           function(location, link, type, subType)
               return type == AUCTION_CATEGORY_QUEST_ITEMS;
-          end
+          end,
+          AUCTION_CATEGORY_QUEST_ITEMS
         },
         { L.TradeGood, 'Interface/Icons/INV_Fabric_Silk_02',
           function(location, link, type, subType)
@@ -239,18 +256,21 @@ do
                      type == AUCTION_CATEGORY_GEMS or
                      type == AUCTION_CATEGORY_ITEM_ENHANCEMENT or
                      type == AUCTION_CATEGORY_GLYPHS;
-          end
+          end,
+          ''
         },
         { L.Misc, 'Interface/Icons/INV_Misc_Rune_01',
           function(location, link, type, subType)
               return type == LE_ITEM_CLASS_MISCELLANEOUS or
                      type == LE_ITEM_CLASS_CONTAINER;
-          end
+          end,
+          ''
         },
         { L.New, 'Interface/PaperDollInfoFrame/UI-GearManager-ItemIntoBag',
           function(location, link, type, subType)
               return C_NewItems.IsNewItem(location.bagID, location.slotIndex);
-          end
+          end,
+          ''
         }
     };
 
